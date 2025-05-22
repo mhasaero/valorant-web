@@ -1,0 +1,23 @@
+.canvas-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+#target-canvas {
+    width: 100%;
+    height: auto;
+    cursor: crosshair;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom crosshair cursor */
+.custom-cursor {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1000;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+}
