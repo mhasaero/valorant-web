@@ -69,4 +69,35 @@ class LeaderboardController extends Controller
         
         return response()->json(['message' => 'Unauthorized'], 403);
     }
+
+    public function apiScores()
+    {
+        try {
+            $scores = Leaderboard::with('user:id,name')
+                ->orderBy('score', 'desc')
+                ->limit(5)
+                ->get(['id', 'user_id', 'score', 'created_at']);
+
+            $result = $scores->map(function($item) {
+                return [
+                    'id' => $item->id,
+                    'name' => $item->user ? $item->user->name : 'Unknown User',
+                    'score' => $item->score,
+                    'created_at' => $item->created_at ? $item->created_at->format('Y-m-d H:i:s') : null
+                ];
+            });
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $result,
+                'total' => $result->count()
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to retrieve high scores'
+            ], 500);
+        }
+    }
 }
